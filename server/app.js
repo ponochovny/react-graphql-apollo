@@ -4,7 +4,7 @@ const { graphqlHTTP } = require('express-graphql')
 const schema = require('../schema/schema')
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGO)
+mongoose.connect(process.env.MONGO, { useNewUrlParser: true })
 
 const app = express()
 const PORT = 3005
