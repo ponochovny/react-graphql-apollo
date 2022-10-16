@@ -12,12 +12,16 @@ const client = new ApolloClient({
 function App() {
 	return (
 		<ApolloProvider client={client}>
-			<Box sx={{ py: 2, px: 4 }}>
-				<Typography variant={'h3'} component={'h1'}>
+			<Box
+				sx={{ py: 2, px: 4, display: 'flex', flexDirection: 'column' }}
+				alignItems='center'
+			>
+				<Typography variant={'h3'} component={'h1'} align='center'>
 					React + GraphQL
 				</Typography>
 				<Box
 					sx={{
+						display: 'inline-block',
 						maxWidth: '900px',
 					}}
 				>

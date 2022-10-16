@@ -12,7 +12,7 @@ import {
 	Typography,
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
-import { green, lightGreen, red } from '@mui/material/colors'
+import { green, grey, red } from '@mui/material/colors'
 
 const GET_MOVIES = gql`
 	query moviesQuery {
@@ -94,7 +94,7 @@ const Movies = () => {
 				<TableContainer component={Paper}>
 					<Table aria-label='customized table'>
 						<TableHead>
-							<TableRow>
+							<TableRow sx={{ bgcolor: grey[300] }}>
 								<TableCell>
 									<b>Name</b>
 								</TableCell>
@@ -125,12 +125,12 @@ const Movies = () => {
 											align='center'
 											sx={[
 												{
-													bgcolor: el.watched ? red[300] : green[300],
+													bgcolor: el.watched ? green[300] : red[300],
 													transition: 'background-color .3s ease',
 												},
 												{
 													'&:hover': {
-														bgcolor: el.watched ? red[200] : green[200],
+														bgcolor: el.watched ? green[200] : red[200],
 														cursor: 'pointer',
 													},
 												},
