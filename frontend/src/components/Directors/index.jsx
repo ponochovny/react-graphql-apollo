@@ -1,4 +1,5 @@
 import { useQuery, gql } from '@apollo/client'
+import { Box, List, ListItem, Typography } from '@mui/material'
 
 const GET_LOCATIONS = gql`
 	query directorsQuery {
@@ -20,18 +21,22 @@ const Directors = () => {
 	console.log(directors)
 
 	return (
-		<div>
-			<h2>Directors</h2>
-			<ul>
-				{loading ? (
-					<p>Loading...</p>
-				) : (
-					<ul>
-						{directors && directors.map((el) => <li key={el.id}>{el.name}</li>)}
-					</ul>
-				)}
-			</ul>
-		</div>
+		<Box sx={{ py: 2 }}>
+			{loading ? (
+				<p>Loading...</p>
+			) : (
+				<>
+					<Typography variant={'h5'}>Directors</Typography>
+					{directors && (
+						<List aria-labelledby='basic-list-demo'>
+							{directors.map((el) => (
+								<ListItem key={el.id}>{el.name}</ListItem>
+							))}
+						</List>
+					)}
+				</>
+			)}
+		</Box>
 	)
 }
 

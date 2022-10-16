@@ -1,4 +1,18 @@
 import { useQuery, gql, useMutation } from '@apollo/client'
+import {
+	Box,
+	IconButton,
+	Paper,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Typography,
+} from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import { green, lightGreen, red } from '@mui/material/colors'
 
 const GET_MOVIES = gql`
 	query moviesQuery {
@@ -70,45 +84,75 @@ const Movies = () => {
 	}
 
 	return (
-		<div>
-			<h2>Movies</h2>
+		<Box sx={{ py: 2 }}>
+			<Typography variant={'h5'} gutterBottom>
+				Movies
+			</Typography>
 			{loading ? (
 				<p>Loading...</p>
 			) : (
-				<table>
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Genre</th>
-							<th>Rate</th>
-							<th>Director</th>
-							<th>Watched</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						{movies &&
-							movies.map((el) => (
-								<tr key={el.id}>
-									<td>{el.name}</td>
-									<td>{el.genre}</td>
-									<td>{el.rate ? el.rate : 'not voted'}</td>
-									<td>{el.director.name}</td>
-									<td
-										className='watching'
-										onClick={() => {
-											updateMovieFunc(el)
-										}}
-									>
-										{el.watched ? 'Yes' : 'No'}
-									</td>
-									<td>Edit btn</td>
-								</tr>
-							))}
-					</tbody>
-				</table>
+				<TableContainer component={Paper}>
+					<Table aria-label='customized table'>
+						<TableHead>
+							<TableRow>
+								<TableCell>
+									<b>Name</b>
+								</TableCell>
+								<TableCell>
+									<b>Genre</b>
+								</TableCell>
+								<TableCell>
+									<b>Rate</b>
+								</TableCell>
+								<TableCell>
+									<b>Director</b>
+								</TableCell>
+								<TableCell>
+									<b>Watched</b>
+								</TableCell>
+								<TableCell></TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{movies &&
+								movies.map((el) => (
+									<TableRow hover key={el.id}>
+										<TableCell>{el.name}</TableCell>
+										<TableCell>{el.genre}</TableCell>
+										<TableCell>{el.rate ? el.rate : 'not voted'}</TableCell>
+										<TableCell>{el.director.name}</TableCell>
+										<TableCell
+											align='center'
+											sx={[
+												{
+													bgcolor: el.watched ? red[300] : green[300],
+													transition: 'background-color .3s ease',
+												},
+												{
+													'&:hover': {
+														bgcolor: el.watched ? red[200] : green[200],
+														cursor: 'pointer',
+													},
+												},
+											]}
+											onClick={() => {
+												updateMovieFunc(el)
+											}}
+										>
+											<Box>{el.watched ? 'Yes' : 'No'}</Box>
+										</TableCell>
+										<TableCell>
+											<IconButton aria-label='edit' size='small'>
+												<EditIcon fontSize='medium' />
+											</IconButton>
+										</TableCell>
+									</TableRow>
+								))}
+						</TableBody>
+					</Table>
+				</TableContainer>
 			)}
-		</div>
+		</Box>
 	)
 }
 

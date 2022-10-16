@@ -2,6 +2,7 @@ import './App.css'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import Movies from './components/Movies'
 import Directors from './components/Directors'
+import { Box, Typography } from '@mui/material'
 
 const client = new ApolloClient({
 	uri: 'http://localhost:3005/graphql',
@@ -11,11 +12,19 @@ const client = new ApolloClient({
 function App() {
 	return (
 		<ApolloProvider client={client}>
-			<div>
-				<h1>React + GraphQL</h1>
-				<Movies />
-				<Directors />
-			</div>
+			<Box sx={{ py: 2, px: 4 }}>
+				<Typography variant={'h3'} component={'h1'}>
+					React + GraphQL
+				</Typography>
+				<Box
+					sx={{
+						maxWidth: '900px',
+					}}
+				>
+					<Movies />
+					<Directors />
+				</Box>
+			</Box>
 		</ApolloProvider>
 	)
 }
