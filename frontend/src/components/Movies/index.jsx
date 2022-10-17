@@ -24,8 +24,9 @@ import {
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { grey } from '@mui/material/colors'
-import { useState } from 'react'
 import { Stack } from '@mui/system'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import { useState } from 'react'
 import { MyRating } from '../MyRating/MyRating'
 
 const GET_MOVIES = gql`
@@ -43,7 +44,7 @@ const GET_MOVIES = gql`
 		}
 	}
 `
-const SET_WATCHED = gql`
+const EDIT_MOVIE = gql`
 	mutation (
 		$id: ID
 		$name: String!
@@ -70,6 +71,33 @@ const SET_WATCHED = gql`
 		}
 	}
 `
+const ADD_MOVIE = gql`
+	mutation (
+		$name: String!
+		$genre: String!
+		$directorId: ID
+		$watched: Boolean!
+		$rate: Int
+	) {
+		addMovie(
+			name: $name
+			genre: $genre
+			directorId: $directorId
+			watched: $watched
+			rate: $rate
+		) {
+			name
+		}
+	}
+`
+const DELETE_MOVIE = gql`
+	mutation ($id: ID) {
+		deleteMovie(id: $id) {
+			id
+			name
+		}
+	}
+`
 const GET_DIRECTORS = gql`
 	query directorsQuery {
 		directors {
@@ -83,30 +111,81 @@ const GET_DIRECTORS = gql`
 const Movies = () => {
 	const { data: { directors = undefined } = {} } = useQuery(GET_DIRECTORS)
 	const { loading, data: { movies = undefined } = {} } = useQuery(GET_MOVIES)
-	const [updateMovie] = useMutation(SET_WATCHED)
+	const [updateMovie] = useMutation(EDIT_MOVIE)
+	const [addMovie] = useMutation(ADD_MOVIE)
+	const [deleteMovie] = useMutation(DELETE_MOVIE)
 
 	const [open, setOpen] = useState(false)
 	const [editableMovie, setEditableMovie] = useState(null)
 
-	const updateMovieFunc = () => {
-		updateMovie({
-			variables: {
-				id: editableMovie.id,
-				name: editableMovie.name,
-				genre: editableMovie.genre,
-				directorId: editableMovie.directorId,
-				rate: editableMovie.rate,
-				watched: editableMovie.watched,
-			},
-			refetchQueries: [{ query: GET_MOVIES }],
-		})
+	const handleCloseModal = () => {
+		setOpen(false)
+	}
+	const handleOpenModal = (action = 'edit') => {
+		setOpen(true)
+		if (action === 'add') {
+			setEditableMovie({
+				id: null,
+				name: '',
+				genre: '',
+				directorId: '',
+				watched: false,
+				rate: null,
+			})
+		}
+	}
+
+	const handleMovieQuery = ({ type = 'edit', payload }) => {
+		switch (type) {
+			case 'delete':
+				deleteMovie({
+					variables: {
+						id: payload,
+					},
+					refetchQueries: [{ query: GET_MOVIES }],
+				})
+				break
+			case 'add':
+				addMovie({
+					variables: {
+						name: editableMovie.name,
+						genre: editableMovie.genre,
+						directorId: editableMovie.directorId,
+						rate: editableMovie.rate,
+						watched: editableMovie.watched,
+					},
+					refetchQueries: [{ query: GET_MOVIES }],
+				})
+				break
+			default:
+				updateMovie({
+					variables: {
+						id: editableMovie.id,
+						name: editableMovie.name,
+						genre: editableMovie.genre,
+						directorId: editableMovie.directorId,
+						rate: editableMovie.rate,
+						watched: editableMovie.watched,
+					},
+					refetchQueries: [{ query: GET_MOVIES }],
+				})
+		}
 	}
 
 	return (
 		<Box sx={{ py: 2 }}>
-			<Typography variant={'h5'} gutterBottom>
-				Movies
-			</Typography>
+			<Stack direction='row' flex alignItems='center' marginBottom={1} gap={1}>
+				<Typography variant={'h5'}>Movies</Typography>
+				<IconButton
+					onClick={() => {
+						handleOpenModal('add')
+					}}
+					aria-label='add'
+					size='small'
+				>
+					<AddCircleOutlineIcon fontSize='small' />
+				</IconButton>
+			</Stack>
 			{loading ? (
 				<p>Loading...</p>
 			) : (
@@ -114,21 +193,11 @@ const Movies = () => {
 					<Table aria-label='customized table'>
 						<TableHead>
 							<TableRow sx={{ bgcolor: grey[300] }}>
-								<TableCell>
-									<b>Name</b>
-								</TableCell>
-								<TableCell>
-									<b>Genre</b>
-								</TableCell>
-								<TableCell>
-									<b>Rate</b>
-								</TableCell>
-								<TableCell>
-									<b>Director</b>
-								</TableCell>
-								<TableCell>
-									<b>Watched</b>
-								</TableCell>
+								<TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
+								<TableCell sx={{ fontWeight: 'bold' }}>Genre</TableCell>
+								<TableCell sx={{ fontWeight: 'bold' }}>Rate</TableCell>
+								<TableCell sx={{ fontWeight: 'bold' }}>Director</TableCell>
+								<TableCell sx={{ fontWeight: 'bold' }}>Watched</TableCell>
 								<TableCell></TableCell>
 							</TableRow>
 						</TableHead>
@@ -154,12 +223,12 @@ const Movies = () => {
 										<TableCell>
 											<IconButton
 												onClick={() => {
-													setOpen(true)
+													handleOpenModal()
 													setEditableMovie({
 														id: el.id,
 														name: el.name,
 														genre: el.genre,
-														directorId: el.director.id,
+														directorId: el.director?.id,
 														rate: el.rate,
 														watched: el.watched,
 													})
@@ -179,7 +248,7 @@ const Movies = () => {
 
 			<Dialog
 				open={open}
-				onClose={() => setOpen(false)}
+				onClose={() => handleCloseModal()}
 				aria-labelledby='dialog-title'
 				aria-describedby='dialog-description'
 			>
@@ -262,12 +331,33 @@ const Movies = () => {
 					</Stack>
 				</DialogContent>
 				<DialogActions sx={{ px: 3 }}>
-					<Button onClick={() => setOpen(false)}>Cancel</Button>
+					{editableMovie?.id !== null && (
+						<>
+							<Button
+								onClick={() => {
+									const answer = confirm('Are you sure?')
+									if (answer) {
+										handleMovieQuery({
+											type: 'delete',
+											payload: editableMovie.id,
+										})
+										handleCloseModal()
+									}
+								}}
+								variant='text'
+								color='error'
+							>
+								Delete
+							</Button>
+							<div style={{ flex: '1 0 0' }} />
+						</>
+					)}
+					<Button onClick={() => handleCloseModal()}>Cancel</Button>
 					<Button
 						autoFocus
 						onClick={() => {
-							setOpen(false)
-							updateMovieFunc()
+							handleCloseModal()
+							handleMovieQuery({ type: 'add' })
 						}}
 						variant='contained'
 					>
