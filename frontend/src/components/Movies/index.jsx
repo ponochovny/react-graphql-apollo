@@ -128,7 +128,7 @@ const Movies = () => {
 				id: null,
 				name: '',
 				genre: '',
-				directorId: '',
+				directorId: directors[0].id,
 				watched: false,
 				rate: null,
 			})
@@ -357,7 +357,7 @@ const Movies = () => {
 						autoFocus
 						onClick={() => {
 							handleCloseModal()
-							handleMovieQuery({ type: 'add' })
+							handleMovieQuery(editableMovie.id == null && { type: 'add' })
 						}}
 						variant='contained'
 					>
