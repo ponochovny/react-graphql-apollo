@@ -29,84 +29,13 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { useState } from 'react'
 import { MyRating } from '../MyRating/MyRating'
 
-const GET_MOVIES = gql`
-	query moviesQuery {
-		movies {
-			id
-			name
-			genre
-			director {
-				id
-				name
-			}
-			watched
-			rate
-		}
-	}
-`
-const EDIT_MOVIE = gql`
-	mutation (
-		$id: ID
-		$name: String!
-		$genre: String!
-		$directorId: ID
-		$watched: Boolean!
-		$rate: Int
-	) {
-		updateMovie(
-			id: $id
-			name: $name
-			genre: $genre
-			directorId: $directorId
-			watched: $watched
-			rate: $rate
-		) {
-			name
-			genre
-			director {
-				name
-			}
-			watched
-			rate
-		}
-	}
-`
-const ADD_MOVIE = gql`
-	mutation (
-		$name: String!
-		$genre: String!
-		$directorId: ID
-		$watched: Boolean!
-		$rate: Int
-	) {
-		addMovie(
-			name: $name
-			genre: $genre
-			directorId: $directorId
-			watched: $watched
-			rate: $rate
-		) {
-			name
-		}
-	}
-`
-const DELETE_MOVIE = gql`
-	mutation ($id: ID) {
-		deleteMovie(id: $id) {
-			id
-			name
-		}
-	}
-`
-const GET_DIRECTORS = gql`
-	query directorsQuery {
-		directors {
-			id
-			name
-			age
-		}
-	}
-`
+import {
+	GET_MOVIES,
+	EDIT_MOVIE,
+	ADD_MOVIE,
+	DELETE_MOVIE,
+} from '../../tools/queries/movies'
+import { GET_DIRECTORS } from '../../tools/queries/directors'
 
 const Movies = () => {
 	const { data: { directors = undefined } = {} } = useQuery(GET_DIRECTORS)

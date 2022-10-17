@@ -17,42 +17,12 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import { useState, useEffect } from 'react'
 
-const GET_DIRECTORS = gql`
-	query directorsQuery {
-		directors {
-			id
-			name
-			age
-		}
-	}
-`
-const ADD_DIRECTOR = gql`
-	mutation ($name: String!, $age: Int!) {
-		addDirector(name: $name, age: $age) {
-			id
-			name
-			age
-		}
-	}
-`
-const EDIT_DIRECTOR = gql`
-	mutation ($id: ID, $name: String!, $age: Int!) {
-		updateDirector(id: $id, name: $name, age: $age) {
-			id
-			name
-			age
-		}
-	}
-`
-const DELETE_DIRECTOR = gql`
-	mutation ($id: ID) {
-		deleteDirector(id: $id) {
-			id
-			name
-			age
-		}
-	}
-`
+import {
+	GET_DIRECTORS,
+	ADD_DIRECTOR,
+	EDIT_DIRECTOR,
+	DELETE_DIRECTOR,
+} from '../../tools/queries/directors'
 
 const Directors = () => {
 	const { loading, data: { directors = undefined } = {} } =
