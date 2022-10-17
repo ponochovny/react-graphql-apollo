@@ -1,5 +1,13 @@
 import { useQuery, gql } from '@apollo/client'
-import { Box, List, ListItem, Typography } from '@mui/material'
+import {
+	Box,
+	IconButton,
+	List,
+	ListItem,
+	Stack,
+	Typography,
+} from '@mui/material'
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 
 const GET_DIRECTORS = gql`
 	query directorsQuery {
@@ -12,13 +20,8 @@ const GET_DIRECTORS = gql`
 `
 
 const Directors = () => {
-	const {
-		loading,
-		error,
-		data: { directors = undefined } = {},
-	} = useQuery(GET_DIRECTORS)
-
-	console.log(directors)
+	const { loading, data: { directors = undefined } = {} } =
+		useQuery(GET_DIRECTORS)
 
 	return (
 		<Box sx={{ py: 2 }}>
@@ -26,7 +29,13 @@ const Directors = () => {
 				<p>Loading...</p>
 			) : (
 				<>
-					<Typography variant={'h5'}>Directors</Typography>
+					<Stack direction='row' flex alignItems='center' gap={1}>
+						<Typography variant={'h5'}>Directors</Typography>
+
+						<IconButton onClick={() => {}} aria-label='add' size='small'>
+							<AddCircleOutlineIcon fontSize='small' />
+						</IconButton>
+					</Stack>
 					{directors && (
 						<List aria-labelledby='basic-list-demo'>
 							{directors.map((el) => (
