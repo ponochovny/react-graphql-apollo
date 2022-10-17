@@ -1,7 +1,7 @@
 import { useQuery, gql } from '@apollo/client'
 import { Box, List, ListItem, Typography } from '@mui/material'
 
-const GET_LOCATIONS = gql`
+const GET_DIRECTORS = gql`
 	query directorsQuery {
 		directors {
 			id
@@ -16,7 +16,7 @@ const Directors = () => {
 		loading,
 		error,
 		data: { directors = undefined } = {},
-	} = useQuery(GET_LOCATIONS)
+	} = useQuery(GET_DIRECTORS)
 
 	console.log(directors)
 
@@ -30,7 +30,9 @@ const Directors = () => {
 					{directors && (
 						<List aria-labelledby='basic-list-demo'>
 							{directors.map((el) => (
-								<ListItem key={el.id}>{el.name}</ListItem>
+								<ListItem disablePadding key={el.id}>
+									{el.name}
+								</ListItem>
 							))}
 						</List>
 					)}
