@@ -38,14 +38,9 @@ const Directors = () => {
 	const [addDirector] = useMutation(ADD_DIRECTOR)
 	const [deleteDirector] = useMutation(DELETE_DIRECTOR)
 
-	useEffect(() => {
-		console.log(editableDirector)
-	}, [editableDirector])
-
 	const handleDirectorQuery = ({ type = 'edit', payload }) => {
 		switch (type) {
 			case 'delete':
-				console.log('1')
 				deleteDirector({
 					variables: {
 						id: payload,
@@ -54,7 +49,6 @@ const Directors = () => {
 				})
 				break
 			case 'add':
-				console.log('2')
 				addDirector({
 					variables: {
 						name: editableDirector.name,
@@ -64,7 +58,6 @@ const Directors = () => {
 				})
 				break
 			default:
-				console.log('3', editableDirector)
 				updateDirector({
 					variables: {
 						id: editableDirector.id,
