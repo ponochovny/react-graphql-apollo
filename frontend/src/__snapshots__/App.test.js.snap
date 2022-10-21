@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test main page renders main blocks 1`] = `
+<h5
+  class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+>
+  Movies
+</h5>
+`;
+
+exports[`Test main page renders main blocks 2`] = `
+<div
+  class="MuiBox-root css-1c35ks0"
+  data-testid="tables"
+>
+  <div
+    class="MuiBox-root css-1sf3xto"
+  >
+    <div
+      class="MuiStack-root css-84qvl9-MuiStack-root"
+    >
+      <h5
+        class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+      >
+        Movies
+      </h5>
+      <button
+        aria-label="add"
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-ptiqhd-MuiSvgIcon-root"
+          data-testid="AddCircleOutlineIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+          />
+        </svg>
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+    <p>
+      Loading...
+    </p>
+  </div>
+  <div
+    class="MuiBox-root css-1sf3xto"
+  >
+    <p>
+      Loading...
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Test main page renders title 1`] = `
+<h1
+  class="MuiTypography-root MuiTypography-h3 MuiTypography-alignCenter css-47suzj-MuiTypography-root"
+>
+  React + GraphQL
+</h1>
+`;

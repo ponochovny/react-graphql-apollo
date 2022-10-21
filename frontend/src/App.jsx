@@ -24,6 +24,7 @@ function App() {
 						display: 'inline-block',
 						maxWidth: '900px',
 					}}
+					data-testid='tables'
 				>
 					<Movies />
 					<Directors />
