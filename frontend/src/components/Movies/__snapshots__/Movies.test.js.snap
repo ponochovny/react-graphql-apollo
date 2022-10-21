@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Movies page renders title 1`] = `
+<h5
+  class="MuiTypography-root MuiTypography-h5 css-ag7rrr-MuiTypography-root"
+>
+  Movies
+</h5>
+`;
+
+exports[`Movies page table is null 1`] = `null`;

@@ -118,7 +118,7 @@ const Movies = () => {
 			{loading ? (
 				<p>Loading...</p>
 			) : (
-				<TableContainer component={Paper}>
+				<TableContainer component={Paper} data-testid='movies-table'>
 					<Table aria-label='customized table'>
 						<TableHead>
 							<TableRow sx={{ bgcolor: grey[300] }}>
@@ -133,7 +133,7 @@ const Movies = () => {
 						<TableBody>
 							{movies &&
 								movies.map((el) => (
-									<TableRow hover key={el.id}>
+									<TableRow hover key={el.id} data-testid='table-row'>
 										<TableCell>{el.name}</TableCell>
 										<TableCell>{el.genre}</TableCell>
 										<TableCell>
